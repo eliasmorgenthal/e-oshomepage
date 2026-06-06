@@ -26,9 +26,13 @@ body{
   gap:20px;
 }
 
-.content{ flex:2; }
+.content{
+  flex:2;
+}
 
-h1{ font-size:40px; }
+h1{
+  font-size:40px;
+}
 
 .card{
   background:rgba(0,0,0,0.35);
@@ -84,38 +88,41 @@ h1{ font-size:40px; }
 
   <div class="content">
     <h1>E-OS</h1>
-    <p>Homepage</p>
+    <p id="pageSubtitle">Homepage</p>
 
     <div class="card">
-      <h2>Welcome</h2>
-      <p>Welcome to E-OS. This is your central dashboard for apps, updates, and tools.</p>
+      <h2 id="welcomeTitle">Welcome</h2>
+      <p id="welcomeText">
+        Welcome to E-OS. This is your central dashboard for apps, updates, and tools.
+      </p>
     </div>
 
     <div class="card">
-      <h2>Quick Access</h2>
-      <button onclick="window.location.href='https://eliasmorgenthal.github.io/E-OS_Changelogs/'">
+      <h2 id="quickAccessTitle">Quick Access</h2>
+      <button id="changelogButton" onclick="openChangelog()">
         Open Changelogs
       </button>
     </div>
 
     <div class="card">
-      <h2>Status</h2>
+      <h2 id="statusTitle">Status</h2>
       <ul>
-        <li>System: Online</li>
-        <li>Security: Active</li>
-        <li>Version: 0.0.53e</li>
+        <li id="statusSystem">System: Online</li>
+        <li id="statusSecurity">Security: Active</li>
+        <li id="statusVersion">Version: 0.0.53e</li>
       </ul>
     </div>
 
-    <footer>© 2026, E-OS Development Team.</footer>
+    <footer id="footer">© 2026, E-OS Development Team.</footer>
   </div>
 
   <div class="side-panel">
-    <h3>Mini Games</h3>
+    <h3 id="gamesTitle">Mini Games</h3>
+
     <button onclick="loadGame('cookie')">Cookie Clicker</button>
 
     <div id="gameArea" class="game-area">
-      <p>Select a game</p>
+      <p id="selectGameText">Select a game</p>
     </div>
   </div>
 
@@ -123,8 +130,8 @@ h1{ font-size:40px; }
 
 <script>
 // Load saved cookies or start at 0
-let cookies = localStorage.getItem("cookies") 
-  ? parseInt(localStorage.getItem("cookies")) 
+let cookies = localStorage.getItem("cookies")
+  ? parseInt(localStorage.getItem("cookies"))
   : 0;
 
 function loadGame(game){
@@ -132,12 +139,18 @@ function loadGame(game){
 
   if(game === "cookie"){
     area.innerHTML = `
-      <h2>Cookie Clicker</h2>
-      <p>Cookies: <span id="cookies">${cookies}</span></p>
+      <h2 id="cookieTitle">Cookie Clicker</h2>
+      <p><span id="cookieLabel">Cookies</span>: <span id="cookies">${cookies}</span></p>
       <button onclick="addCookie()">Click 🍪</button>
       <br><br>
-      <button onclick="resetCookies()">Reset</button>
+      <button onclick="resetCookies()" id="resetBtn">Reset</button>
     `;
+
+    // Translate game instantly if German is active
+    if(language === "de"){
+      document.getElementById("cookieLabel").textContent = "Kekse";
+      document.getElementById("resetBtn").textContent = "Zurücksetzen";
+    }
   }
 }
 
@@ -151,6 +164,49 @@ function resetCookies(){
   cookies = 0;
   localStorage.setItem("cookies", cookies);
   document.getElementById("cookies").innerText = cookies;
+}
+
+// Language detection
+const params = new URLSearchParams(window.location.search);
+const language = params.get("lan");
+
+// German translations
+if(language === "de"){
+  document.documentElement.lang = "de";
+  document.title = "E-OS Startseite";
+
+  document.getElementById("pageSubtitle").textContent = "Startseite";
+
+  document.getElementById("welcomeTitle").textContent = "Willkommen";
+  document.getElementById("welcomeText").textContent =
+    "Willkommen bei E-OS. Dies ist dein zentrales Dashboard für Apps, Updates und Werkzeuge.";
+
+  document.getElementById("quickAccessTitle").textContent = "Schnellzugriff";
+  document.getElementById("changelogButton").textContent =
+    "Änderungsprotokolle öffnen";
+
+  document.getElementById("statusTitle").textContent = "Status";
+  document.getElementById("statusSystem").textContent = "System: Online";
+  document.getElementById("statusSecurity").textContent = "Sicherheit: Aktiv";
+  document.getElementById("statusVersion").textContent = "Version: 0.0.53e";
+
+  document.getElementById("gamesTitle").textContent = "Mini-Spiele";
+  document.getElementById("selectGameText").textContent =
+    "Wähle ein Spiel";
+
+  document.getElementById("footer").textContent =
+    "© 2026, E-OS Entwicklungsteam.";
+}
+
+// Open changelog while preserving language
+function openChangelog(){
+  let url = "https://eliasmorgenthal.github.io/E-OS_Changelogs/";
+
+  if(language === "de"){
+    url += "?lan=de";
+  }
+
+  window.location.href = url;
 }
 </script>
 
