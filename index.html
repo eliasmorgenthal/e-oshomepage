@@ -37,6 +37,22 @@ h1{ font-size:40px; }
   margin-bottom:20px;
 }
 
+.card button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  background:rgba(255,255,255,0.15);
+  color:white;
+  font-size:14px;
+  transition:0.2s;
+}
+
+.card button:hover{
+  background:rgba(255,255,255,0.3);
+}
+
 .side-panel{
   width:220px;
   background:rgba(0,0,0,0.4);
@@ -77,11 +93,9 @@ h1{ font-size:40px; }
 
     <div class="card">
       <h2>Quick Access</h2>
-      <ul>
-        <li>System Apps</li>
-        <li>Settings Panel</li>
-        <li>Online Services</li>
-      </ul>
+      <button onclick="window.location.href='https://eliasmorgenthal.github.io/E-OS_Changelogs/'">
+        Open Changelogs
+      </button>
     </div>
 
     <div class="card">
